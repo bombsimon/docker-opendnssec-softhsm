@@ -53,6 +53,7 @@ RUN adduser -D -u 1000 ${USER}
 # Change permissions on files and folders which should be owned by the
 # opendnssec user.
 RUN chown -R ${USER}:${USER} \
+    /opendnssec \
 	/var/lib/softhsm \
 	/var/opendnssec \
 	/etc/opendnssec \
