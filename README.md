@@ -22,21 +22,24 @@ to sign zone files.
 
 ## Running OpenDNSSEC
 
-To start an instance of the container with OpenDNSSEC and SoftHSM running just
-start a container with the image.
+To run an instance of the container with OpenDNSSEC and SoftHSM just start a
+container with the image.
 
 ```sh
 docker run --name opendnssec -d bombsimon/opendnssec-softhsm
 ```
 
-No zones will be added by default so this must be made manually. For details,
-see the OpenDNSSEC reference linked above. An example with the
-[example.com](example.com) zone in this repository would look like this:
+Zones found in `/var/opendnssec/unsigned` on startup will be added automatically
+and the zone will be named the same as the file found.
+
+If the container was started without any zones mounted to above mentioned path
+you can add them manually. For details, see the OpenDNSSEC reference linked
+above. An example with the [example.com](example.com) zone in this repository
+would look like this:
 
 ```sh
 docker cp example.com opendnssec:/var/opendnssec/unsigned
 docker exec opendnssec ods-enforcer zone add -z example.com -p lab
-docker exec opendnssec ods-signer sign example.com
 ```
 
 Signed zones are located in `/var/opendnssec/signed`.
