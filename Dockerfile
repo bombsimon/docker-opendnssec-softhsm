@@ -89,4 +89,12 @@ RUN apk del \
 
 COPY ./docker-entrypoint.sh /opendnssec/
 
+# Erase and setup KASP as opendnssec user on build.
+USER opendnssec
+
+RUN yes | ods-enforcer-db-setup
+
+# Start the container as root to allow privileged port binding (syslogd)
+USER root
+
 ENTRYPOINT [ "/opendnssec/docker-entrypoint.sh", "syslogd", "-n", "-O", "-" ]
