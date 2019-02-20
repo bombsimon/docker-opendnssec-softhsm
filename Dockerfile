@@ -58,7 +58,18 @@ RUN cd /opendnssec/build && \
     ./configure && \
     make && make install
 
+# Remove build artifacts
 RUN rm -fr /opendnssec/build
+
+# Remove packages and build files we no longer need.
+RUN apk del \
+    cmake \
+    g++ \
+    git \
+    make \
+    perl \
+    tar \
+    wget
 
 # Add user to not run as root
 RUN adduser -D -u 1000 ${USER}
@@ -74,27 +85,13 @@ RUN chown -R ${USER}:${USER} \
     /opendnssec
 
 # Initialize and reassign SoftHSM token slot
-RUN su - opendnssec -c \
+RUN su - ${USER} -c \
     'softhsm2-util --init-token --slot 0 --label OpenDNSSEC --pin 1234 --so-pin 1234'
 
-# Remove packages and build files we no longer need.
-RUN apk del \
-    cmake \
-    g++ \
-    git \
-    make \
-    perl \
-    tar \
-    wget
+# Erase and setup KASP as opendnssec user on build.
+RUN su - ${USER} -c \
+    yes | ods-enforcer-db-setup
 
 COPY ./docker-entrypoint.sh /opendnssec/
-
-# Erase and setup KASP as opendnssec user on build.
-USER opendnssec
-
-RUN yes | ods-enforcer-db-setup
-
-# Start the container as root to allow privileged port binding (syslogd)
-USER root
 
 ENTRYPOINT [ "/opendnssec/docker-entrypoint.sh", "syslogd", "-n", "-O", "-" ]
