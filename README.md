@@ -1,24 +1,12 @@
 # docker-opendnssec-softhsm
 
 This is a repository which builds a minimalistic OpenDNSSEC + SoftHSM instance
-to sign zone files.
+to sign zone files. The image will start `ods-enforcerd` and `ods-signerd` in
+the background and then use `syslog` in foreground as PID 1.
 
-## Versions
+## Supported tags
 
-* Alpine Linux - `latest (3.9)`
-* GOST Engine - `master (1.1.0.3)`
-* LDNS - `1.7.0`
-* OpenDNSSEC - `2.1.3`
-* OpenSSL - `1.1.1`
-* SoftHSM - `2.5.0`
-
-## References
-
-* [OpenDNSSEC](https://www.opendnssec.org/)
-* [SoftHSM](https://www.opendnssec.org/softhsm/)
-* [OpenDNSSEC GitHub project](https://github.com/opendnssec)
-* [OpenDNSSEC Wiki](https://wiki.opendnssec.org/display/DOCS20)
-* [OpenDNSSEC Lab & Trainging](https://github.com/opendnssec/odslab)
+* [`latest`](https://github.com/bombsimon/docker-opendnssec-softhsm/blob/master/Dockerfile)
 
 ## Running OpenDNSSEC
 
@@ -44,6 +32,14 @@ docker exec opendnssec ods-enforcer zone add -z example.com -p lab
 
 Signed zones are located in `/var/opendnssec/signed`.
 
+## References
+
+* [OpenDNSSEC](https://www.opendnssec.org/)
+* [SoftHSM](https://www.opendnssec.org/softhsm/)
+* [OpenDNSSEC GitHub project](https://github.com/opendnssec)
+* [OpenDNSSEC Wiki](https://wiki.opendnssec.org/display/DOCS20)
+* [OpenDNSSEC Lab & Trainging](https://github.com/opendnssec/odslab)
+
 ## Building
 
 The container will build four packages from source which makes the container
@@ -52,8 +48,18 @@ support deployment on an Alpine Linux.
 
 First of all we build [`gost engine`](https://github.com/gost-engine/engine)
 since it's no longer bundled with SSL >= `1.1.1` but is required for SoftHSM. We
-then build `ldns` from source so we can compile it with `openssl` instead of
-`libressl` which the package in the apk repository is built upon.
+then build [`ldns`](https://www.nlnetlabs.nl/projects/ldns/about/) from source
+so we can compile it with `openssl` instead of `libressl` which the package in
+the apk repository is built upon.
 
 When we've built `ldns` we will first build `softhsm` and then `opendnssec`. To
 build a new version of the container run `docker build -t opendnssec-softhsm .`
+
+### Versions
+
+* Alpine Linux - `latest (3.9)`
+* GOST Engine - `master (1.1.0.3)`
+* LDNS - `1.7.0`
+* OpenDNSSEC - `2.1.3`
+* OpenSSL - `1.1.1a-r1`
+* SoftHSM - `2.5.0`

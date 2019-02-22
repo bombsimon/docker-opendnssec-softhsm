@@ -24,12 +24,11 @@ RUN apk add --update \
 RUN mkdir -p /opendnssec/build
 
 # Build GOST engine which is required for SOFTHSM. This is no longer bundled in
-# openssh >= 1.1.1
+# openssl >= 1.1.1
 RUN cd /opendnssec/build && \
     git clone https://github.com/gost-engine/engine.git && \
     mkdir -p engine/build && cd engine/build && \
     cmake -DCMAKE_BUILD_TYPE=Release .. && \
-    cmake --build . --config Release && \
     cmake --build . --target install --config Release
 
 # Install LDNS from source. We don't want to install this from the apk mirror

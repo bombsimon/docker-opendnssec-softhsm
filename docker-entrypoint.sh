@@ -11,6 +11,8 @@ su - opendnssec -c 'ods-enforcer policy import'
 # Add each zone found in the unsigned directory.
 for zone in /var/opendnssec/unsigned/*
 do
+    [ -f "$zone" ] || break
+
     su - opendnssec -c "ods-enforcer zone add -z $(basename "$zone") -p lab ||
         echo $zone: Already added zone!"
 done
