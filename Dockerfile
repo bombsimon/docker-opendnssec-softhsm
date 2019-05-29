@@ -1,6 +1,7 @@
 FROM alpine:latest
 
-ARG OPENDNSSEC_VERSION=2.1.3
+ARG GOST_ENGINE_VERSION=1.1.0.3
+ARG OPENDNSSEC_VERSION=2.1.4
 ARG SOFTHSM_VERSION=2.5.0
 ARG LDNS_VERSION=1.7.0
 ARG USER=opendnssec
@@ -28,8 +29,11 @@ RUN mkdir -p /opendnssec/build
 RUN cd /opendnssec/build && \
     git clone https://github.com/gost-engine/engine.git && \
     mkdir -p engine/build && cd engine/build && \
+    git checkout v${GOST_ENGINE_VERSION} && \
     cmake -DCMAKE_BUILD_TYPE=Release .. && \
-    cmake --build . --target install --config Release
+    cmake --build . --config Release && \
+    mkdir -p /usr/lib/engines-1.1/ && \
+    cp ../bin/gost.so /usr/lib/engines-1.1/
 
 # Install LDNS from source. We don't want to install this from the apk mirror
 # since that package is built upon (and thus dependent) on libressl. We want to
@@ -89,7 +93,7 @@ RUN su - ${USER} -c \
 
 # Erase and setup KASP as opendnssec user on build.
 RUN su - ${USER} -c \
-    yes | ods-enforcer-db-setup
+    'yes | ods-enforcer-db-setup'
 
 COPY ./docker-entrypoint.sh /opendnssec/
 
