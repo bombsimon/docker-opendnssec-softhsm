@@ -65,7 +65,7 @@ docker build --no-cache -t opendnssec-softhsm .
 | [GOST Engine]  | 1.1.0.3        |
 | [LDNS]         | 1.7.1          |
 | [OpenDNSSEC]   | 2.1.6          |
-| [OpenSSL]      | 1.1.1b-r1      |
+| [OpenSSL]      | 1.1.1d-r3      |
 | [SoftHSM]      | 2.5.0          |
 
   [`latest`]: https://github.com/bombsimon/docker-opendnssec-softhsm/blob/master/Dockerfile
@@ -76,6 +76,6 @@ docker build --no-cache -t opendnssec-softhsm .
   [OpenDNSSEC Lab & Training]: https://github.com/opendnssec/odslab
   [OpenDNSSEC Wiki]: https://wiki.opendnssec.org/display/DOCS20
   [OpenDNSSEC]: https://www.opendnssec.org/
-  [OpenSSL]: https://pkgs.alpinelinux.org/package/v3.9/main/x86/openssl-dev
+  [OpenSSL]: https://pkgs.alpinelinux.org/package/v3.11/main/x86/openssl-dev
   [SoftHSM]: https://www.opendnssec.org/softhsm/
   [example.com]: example.com
