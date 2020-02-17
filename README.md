@@ -61,7 +61,7 @@ docker build --no-cache -t opendnssec-softhsm .
 
 | Software       | Version        |
 | -------------- | -------------- |
-| [Alpine Linux] | 3.9.4 (latest) |
+| [Alpine Linux] | 3.11           |
 | [GOST Engine]  | 1.1.0.3        |
 | [LDNS]         | 1.7.1          |
 | [OpenDNSSEC]   | 2.1.4          |
